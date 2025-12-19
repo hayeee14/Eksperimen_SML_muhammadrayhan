@@ -4,12 +4,11 @@ import os
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 
 def run_pipeline():
-    # 1. Tentukan Path (Sesuaikan dengan struktur folder lokal Anda)
-    # Menaik satu level dari folder 'preprocessing' ke folder 'namadataset_raw'
-    raw_path = os.path.join('..', 'namadataset_raw', 'train.csv')
+    # 1. Tentukan Path - Menggunakan nama file langsung agar aman di GitHub
+    raw_path = 'train.csv'
     
     if not os.path.exists(raw_path):
-        print(f"❌ Error: File mentah tidak ditemukan di {raw_path}")
+        print(f"❌ Error: File {raw_path} tidak ditemukan di direktori saat ini.")
         return
 
     # 2. Load Data
@@ -43,21 +42,16 @@ def run_pipeline():
     scaler = StandardScaler()
     X_scaled = pd.DataFrame(scaler.fit_transform(X), columns=X.columns)
 
-    # 6. GABUNGKAN & EXPORT (Bagian Terpenting untuk Kriteria 1)
+    # 6. GABUNGKAN & EXPORT
     df_final = X_scaled.copy()
-    # Pastikan nama kolom target sama dengan yang dicari di modelling.py
     df_final['Loan_Status_Target'] = y.values
 
-    # Buat folder output
-    output_dir = os.path.join('..', 'preprocessing', 'namadataset_preprocessing')
-    if not os.path.exists(output_dir):
-        os.makedirs(output_dir)
-
-    output_path = os.path.join(output_dir, 'train_clean.csv')
+    # Simpan di direktori yang sama agar mudah dideteksi
+    output_path = 'train_clean.csv'
     df_final.to_csv(output_path, index=False)
 
     print(f"✅ Otomatisasi Selesai!")
-    print(f"✅ Data bersih 'train_clean.csv' telah dibuat di: {output_path}")
+    print(f"✅ Data bersih 'train_clean.csv' telah dibuat.")
 
 if __name__ == "__main__":
     run_pipeline()
